@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -92,7 +94,7 @@ class _MapsState extends State<Maps> {
                 scrollGesturesEnabled: true,
                 zoomGesturesEnabled: true,
                 onMapCreated: _onCreateMap,
-                /*markers: {
+                markers: {
                   const Marker(
                     markerId: MarkerId("Source"),
                     position: sourceLocation,
@@ -101,7 +103,7 @@ class _MapsState extends State<Maps> {
                     markerId: MarkerId("Destinition"),
                     position: destination,
                   ),
-                },*/
+                },
               ),
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -109,14 +111,19 @@ class _MapsState extends State<Maps> {
             ElevatedButton(
               child: const Text("Başla"),
               onPressed: () {
-                //getPolylines();
+                getPolylines();
               },
             ),
             const SizedBox(
               width: 4,
             ),
             ElevatedButton(
-              child: const Text("Bitir"),
+              child: Text(calculateDistance(
+                      sourceLocation.latitude,
+                      sourceLocation.longitude,
+                      destination.latitude,
+                      destination.longitude)
+                  .toString()),
               onPressed: () {},
             ),
           ],
@@ -132,5 +139,13 @@ class _MapsState extends State<Maps> {
         ),
       );
     });
+  }
+
+  double calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var a = 0.5 -
+        cos((lat2 - lat1) * p) / 2 +
+        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }
