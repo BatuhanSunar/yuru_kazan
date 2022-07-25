@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "456732974286",
+    "project_id": "yurukazan-31d64",
+    "storage_bucket": "yurukazan-31d64.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456732974286:android:3a8c06580f6d0be170c49f",
+        "android_client_info": {
+          "package_name": "com.example.yuru_kazan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456732974286-60vt0su7hroio8lvukh8g8ahijhek09t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAV8KxKoULChI3N47lYBnQp8SNFsCYTKpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456732974286-60vt0su7hroio8lvukh8g8ahijhek09t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
