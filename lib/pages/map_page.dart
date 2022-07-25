@@ -34,7 +34,6 @@ class _MapsState extends State<Maps> {
 
     location.onLocationChanged.listen((newLoc) {
       currentLocation = newLoc;
-
       setState(() {});
     });
   }
