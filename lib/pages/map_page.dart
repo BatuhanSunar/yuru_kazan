@@ -24,12 +24,11 @@ class _MapsState extends State<Maps> {
 
   List<LatLng> polylineCoordinates = [];
   LocationData? currentLocation;
+  Location location = Location();
 
   void getCurrentLocation() {
-    Location location = Location();
-
-    location.getLocation().then((location2) {
-      currentLocation = location2;
+    location.getLocation().then((loc) {
+      currentLocation = loc;
     });
 
     location.onLocationChanged.listen((newLoc) {
@@ -60,7 +59,7 @@ class _MapsState extends State<Maps> {
   @override
   void initState() {
     getCurrentLocation();
-    getPolylines();
+
     super.initState();
   }
 
@@ -68,8 +67,9 @@ class _MapsState extends State<Maps> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: currentLocation == null
-            ? const CircularProgressIndicator()
+            ? const Center(child: CircularProgressIndicator())
             : GoogleMap(
+                myLocationEnabled: true,
                 myLocationButtonEnabled: true,
                 mapType: MapType.normal,
                 initialCameraPosition: CameraPosition(
@@ -91,10 +91,8 @@ class _MapsState extends State<Maps> {
                 compassEnabled: true,
                 scrollGesturesEnabled: true,
                 zoomGesturesEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller = controller;
-                },
-                markers: {
+                onMapCreated: _onCreateMap,
+                /*markers: {
                   const Marker(
                     markerId: MarkerId("Source"),
                     position: sourceLocation,
@@ -103,14 +101,16 @@ class _MapsState extends State<Maps> {
                     markerId: MarkerId("Destinition"),
                     position: destination,
                   ),
-                },
+                },*/
               ),
         floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               child: const Text("Başla"),
-              onPressed: () {},
+              onPressed: () {
+                //getPolylines();
+              },
             ),
             const SizedBox(
               width: 4,
@@ -121,5 +121,16 @@ class _MapsState extends State<Maps> {
             ),
           ],
         ));
+  }
+
+  void _onCreateMap(GoogleMapController controller) {
+    _controller = controller;
+    location.onLocationChanged.listen((l) {
+      _controller?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: LatLng(l.latitude!, l.longitude!), zoom: 16),
+        ),
+      );
+    });
   }
 }
