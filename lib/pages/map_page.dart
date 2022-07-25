@@ -67,60 +67,111 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
+    Size _size = MediaQuery.of(context).size;
     return Scaffold(
-        body: currentLocation == null
-            ? const CircularProgressIndicator()
-            : GoogleMap(
-                myLocationButtonEnabled: true,
-                mapType: MapType.normal,
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(
-                    currentLocation!.latitude!,
-                    currentLocation!.longitude!,
-                  ),
-                  zoom: 16,
-                ),
-                polylines: {
-                  Polyline(
-                    polylineId: const PolylineId("Route"),
-                    points: polylineCoordinates,
-                    color: Colors.blue,
-                    width: 6,
-                  )
-                },
-                tiltGesturesEnabled: true,
-                compassEnabled: true,
-                scrollGesturesEnabled: true,
-                zoomGesturesEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller = controller;
-                },
-                markers: {
-                  const Marker(
-                    markerId: MarkerId("Source"),
-                    position: sourceLocation,
-                  ),
-                  const Marker(
-                    markerId: MarkerId("Destinition"),
-                    position: destination,
-                  ),
-                },
-              ),
-        floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+      appBar: AppBar(
+        title: Text(
+          'Tarih gelecek',
+        ),
+      ) ,
+      body:Container(
+         color :Color.fromARGB(57, 3, 168, 244),
+        child: Column(
+          
           children: [
-            ElevatedButton(
-              child: const Text("Başla"),
-              onPressed: () {},
+            Container(//Map's ConTainer
+            padding: EdgeInsets.only(bottom:8),
+              height: _size.height /2,
+              width: _size.width,
+              decoration: BoxDecoration(
+                        
+              ),
+              child: GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target:LatLng(39,34) ,
+                  zoom: 5
+                ),
+              ),
+              ),
+            
+            Container(//Details Container
+            
+            
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: _size.width/22,),
+                      Container(//Toplam Mesafe
+                     
+                      height: _size.height/4,
+                      width: _size.width*6/22,
+                     decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 246, 246, 245),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40)
+                          ),
+                        )
+                      ),
+                      SizedBox(width: _size.width/22,),
+                      Container(//ort hız
+                    
+                        height: _size.height/4,
+                        width: _size.width*6/22,
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 246, 246, 245),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40)
+                          ),
+                        )
+                      ),
+                      SizedBox(width: _size.width/22,),
+                      Container(
+                       
+                        height: _size.height/4,
+                        width: _size.width*6/22,
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 246, 246, 245),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(40)
+                          ),
+                        )
+                       
+                      ),
+                      SizedBox(width: _size.width/22,),
+                    ],
+                  ),
+              ]),
             ),
-            const SizedBox(
-              width: 4,
-            ),
-            ElevatedButton(
-              child: const Text("Bitir"),
-              onPressed: () {},
-            ),
+            SizedBox(height: 10,),
+            Container(//Button Container
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                    
+                    }, 
+                    child: const Text(
+                      'BAŞLAT',
+                      ),
+                  ),
+                  SizedBox(width: _size.width/2,),
+                  ElevatedButton(
+                    onPressed: () {
+                    
+                    }, 
+                    child: const Text(
+                      'BİTİR',
+                    ),
+                  )
+                ],  
+              ),
+            )
           ],
-        ));
+        ),
+      )  
+    );
   }
 }
