@@ -28,6 +28,8 @@ class _MapsState extends State<Maps> {
   LocationData? currentLocation;
   Location location = Location();
 
+  double distance = 0.0;
+
   void getCurrentLocation() {
     location.getLocation().then((loc) {
       currentLocation = loc;
@@ -46,6 +48,7 @@ class _MapsState extends State<Maps> {
       google_api_key,
       PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
       PointLatLng(destination.latitude, destination.longitude),
+      travelMode: TravelMode.walking,
     );
 
     if (result.points.isNotEmpty) {
@@ -54,7 +57,19 @@ class _MapsState extends State<Maps> {
           LatLng(point.latitude, point.longitude),
         ),
       );
-      setState(() {});
+      double totalDistance = 0;
+      for (var i = 0; i < polylineCoordinates.length - 1; i++) {
+        totalDistance += calculateDistance(
+            polylineCoordinates[i].latitude,
+            polylineCoordinates[i].longitude,
+            polylineCoordinates[i + 1].latitude,
+            polylineCoordinates[i + 1].longitude);
+      }
+      print(totalDistance);
+
+      setState(() {
+        distance = totalDistance;
+      });
     }
   }
 
@@ -118,12 +133,7 @@ class _MapsState extends State<Maps> {
               width: 4,
             ),
             ElevatedButton(
-              child: Text(calculateDistance(
-                      sourceLocation.latitude,
-                      sourceLocation.longitude,
-                      destination.latitude,
-                      destination.longitude)
-                  .toString()),
+              child: Text(distance.toString()),
               onPressed: () {},
             ),
           ],
